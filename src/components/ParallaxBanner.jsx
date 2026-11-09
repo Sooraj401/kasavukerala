@@ -17,7 +17,7 @@ export default function ParallaxBanner() {
   };
 
   return (
-    <section className="relative h-[75vh] min-h-150 flex items-center overflow-hidden">
+    <section id="about" className="relative h-[75vh] min-h-150 flex items-center overflow-hidden">
       
       {/* 1. Parallax Background */}
       <div 
