@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import HeroCarousel from './components/HeroCarousel';
 import Features from './components/Features';
-import ProductGrid from './components/ProductGrid';
+import ProductGrid,{ allProducts} from './components/ProductGrid';
 import BentoShowcase from './components/BentoShowcase';
 import ParallaxBanner from './components/ParallaxBanner';
 import Testimonials from './components/Testimonials';
@@ -12,6 +12,19 @@ import Preloader from './components/PreLoader';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('product');
+    
+    if (productId) {
+      const product = allProducts.find(p => p.id === productId);
+      if (product && product.img) {
+        window.location.replace(product.img);
+        return; 
+      }
+    }
+  }, []);
 
   // Lock scrolling while the preloader is active
   useEffect(() => {

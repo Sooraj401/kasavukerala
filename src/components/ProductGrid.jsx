@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Eye, Heart, Loader2 } from 'lucide-react';
+import { ShoppingBag, Eye, Heart, Loader2, MessageCircle } from 'lucide-react';
 
-// The complete, hardcoded catalog of 40 distinct Kasavu products
-const allProducts = [
+
+export const allProducts = [
   { id: 'POT01', name: 'Borderless Off-White Kerala Cotton Saree with Zari Stripes', price: 842, category: 'Kerala Cotton', img: 'https://www.pothys.com/cdn/shop/files/DSC07399_00149fe3-fc54-4789-9ac0-9f5b1dfeea62.jpg?v=1783759717&width=533', badge: '10% OFF' },
   { id: 'POT02', name: 'Cream Plain Kerala Cotton Saree Highlighted by Self-Border', price: 824, category: 'Kerala Cotton', img: 'https://www.pothys.com/cdn/shop/files/34B_722bd4f4-68c3-4d03-97cc-d38b54e3becd.jpg?v=1783149349&width=533', badge: 'Sale' },
   { id: 'POT03', name: 'Cream Kerala Cotton Saree Adorned with Pichwai Lotus Print', price: 648, category: 'Cotton Sarees', img: 'https://www.pothys.com/cdn/shop/files/PRZ01406.jpg?v=1781934223&width=533', badge: '' },
@@ -47,24 +47,36 @@ const allProducts = [
 ];
 
 export default function ProductGrid() {
-  const itemsPerRow = 4;
+const itemsPerRow = 4;
   const initialRows = 2;
-  const itemsToLoad = itemsPerRow * initialRows; // Load 8 items (2 rows) per click
+  const itemsToLoad = itemsPerRow * initialRows; 
 
   const [visibleCount, setVisibleCount] = useState(itemsToLoad);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Pagination Handler
   const handleLoadMore = () => {
     setIsLoading(true);
     setTimeout(() => {
       setVisibleCount(prev => prev + itemsToLoad);
       setIsLoading(false);
-    }, 600); // UI delay for smoother feel
+    }, 600); 
+  };
+
+  const handleWhatsAppEnquiry = (product) => {
+    const phoneNumber = "918940809388"; 
+    
+    const imageLink = `${window.location.origin}/?product=${product.id}`;
+    
+    const message = `Hi Kasavu Kerala, I would like to enquire about this product:\n\n*Product Name:* ${product.name}\n*Price:* ₹${product.price.toLocaleString('en-IN')}\n*Product ID:* ${product.id}\n*View Image:* ${imageLink}\n\nCould you share more details?`;
+    
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
-    <section id="collections" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-kasavu-cream">
+<section id="collections" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-kasavu-cream">
       
       {/* Section Header */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-12">
@@ -114,11 +126,14 @@ export default function ProductGrid() {
                   loading="lazy"
                 />
                 
-                {/* Hover Quick Actions */}
+                {/* Hover Quick Actions (Updated for WhatsApp) */}
                 <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out z-20 flex space-x-2">
-                  <button className="flex-1 bg-kasavu-dark text-white py-3.5 rounded-xl flex justify-center items-center space-x-2 text-[11px] font-bold uppercase tracking-wider hover:bg-kasavu-gold transition-colors shadow-lg">
-                    <ShoppingBag size={16} />
-                    <span>Add to Bag</span>
+                  <button 
+                    onClick={() => handleWhatsAppEnquiry(item)}
+                    className="flex-1 bg-[#25D366] text-white py-3.5 rounded-xl flex justify-center items-center space-x-2 text-[11px] font-bold uppercase tracking-wider hover:bg-[#128C7E] transition-colors shadow-lg"
+                  >
+                    <MessageCircle size={16} />
+                    <span>Enquire</span>
                   </button>
                   <button className="bg-white text-kasavu-dark p-3.5 rounded-xl hover:bg-kasavu-gold hover:text-white transition-colors shadow-lg shrink-0">
                     <Eye size={18} />
